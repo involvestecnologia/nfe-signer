@@ -1,0 +1,55 @@
+{
+  "name": "nfe-signer",
+  "version": "1.1.1",
+  "private": true,
+  "author": {
+    "name": "Rodrigo Gomes da Silva",
+    "email": "rodrigo.smscom@gmail.com",
+    "url": "https://github.com/rodrigogs"
+  },
+  "scripts": {
+    "start": "dotenv nodemon ./bin/www",
+    "eslint": "eslint . --ext .js",
+    "test": "cross-env NODE_ENV=test mocha --exit $(find test -name '*.spec.js')",
+    "coverage": "cross-env NODE_ENV=test nyc --reporter=html --reporter=lcov npm test",
+    "docs": "apidoc -i src/controllers -o doc/"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "compression": "^1.7.1",
+    "cors": "^2.8.4",
+    "debug": "^3.1.0",
+    "dotenv": "^5.0.0",
+    "express": "5.0.0-alpha.6",
+    "helmet": "^3.10.0",
+    "make-dir": "^1.1.0",
+    "morgan": "^1.9.0",
+    "node-forge": "^0.7.1",
+    "passport": "^0.4.0",
+    "passport-strategy": "^1.0.0",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "split": "^1.0.1",
+    "winston": "^2.4.0",
+    "winston-graylog2": "^0.7.0",
+    "xml-crypto": "^0.10.1",
+    "xmldom": "^0.1.27"
+  },
+  "devDependencies": {
+    "apidoc": "^0.17.6",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "cross-env": "^5.1.3",
+    "dotenv-cli": "^1.4.0",
+    "eslint": "^4.16.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "mocha": "^5.0.0",
+    "nodemon": "^1.14.11",
+    "nyc": "^11.4.1"
+  },
+  "engines": {
+    "node": ">=7.6.0"
+  }
+}
