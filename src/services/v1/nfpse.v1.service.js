@@ -40,31 +40,12 @@ const _denormalizePassword = (password) => {
 };
 
 /**
- * Removes the Z from the date zone
- *
- * FIXME it is a workaround that should be removed some sunny day
- *
- * @param {String} xml
- * @private
- */
-const _removeDateZone = (xml) => {
-  const doc = new DOMParser().parseFromString(xml);
-  const element = doc.documentElement.getElementsByTagName('dataEmissao')[0].firstChild;
-  element.nodeValue = element.nodeValue.replace('Z', '');
-  element.data = element.data.replace('Z', '');
-
-  return doc.toString();
-};
-
-/**
  * @param {String} xml
  * @return {Promise.<void>}
  * @private
  */
 const _signXml = async (xml) => {
   debug('signing xml');
-
-  xml = _removeDateZone(xml);
 
   const key = await _getFile(Env.KEY_PATH);
   const certificate = await _getFile(Env.CERTIFICATE_PATH);
