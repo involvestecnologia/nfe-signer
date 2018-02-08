@@ -1,0 +1,71 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: staging-nfe-signer
+  namespace: staging
+  labels:
+    environment: staging
+    application: staging-nfe-signer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      environment: staging
+      application: staging-nfe-signer
+  template:
+    metadata:
+      labels:
+        environment: staging
+        application: staging-nfe-signer
+    spec:
+      containers:
+        - name: staging-nfe-signer
+          image: "registry.agilepromoter.com/graygogs:7d7ac900f69adee87a8eea1aab2dd1c165791234"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_CLOUD_CONFIG_LABEL
+              value: "staging"
+            - name: SERVER_PORT
+              value: "8080"
+      imagePullSecrets:
+        - name: involvesregistry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: staging-nfe-signer
+  namespace: staging
+  labels:
+    application: staging-nfe-signer
+spec:
+  type: NodePort
+  selector:
+    application: staging-nfe-signer
+  ports:
+  - port: 8080
+    targetPort: 8080
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: staging-nfe-signer
+  namespace: staging
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+    - staging-cloud.agilepromoter.com
+    secretName: agilepromoter-cert
+  rules:
+  - host: "staging-cloud.agilepromoter.com"
+    http:
+      paths:
+      - path: /graygogs
+        backend:
+          serviceName: staging-nfe-signer
+          servicePort: 8080
